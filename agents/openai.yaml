@@ -1,0 +1,4 @@
+interface:
+  display_name: "英语逐句精讲"
+  short_description: "按固定标准逐句翻译并拆解英语句子、字幕、台词与文章片段"
+  default_prompt: "使用 $english-explain 逐句讲解这段英语。"
