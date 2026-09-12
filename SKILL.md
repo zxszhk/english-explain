@@ -55,16 +55,16 @@ description: "以中文逐句精讲英语句子、台词、字幕和文章，提
 ### 英文引用与结构片段
 
 - “原句”部分的完整英文使用引用块。正文中的单词、短语、从句片段、句型成分和简短还原形式使用行内代码，如 `held responsible`、`S + V + O + C`、`which meant that...`。
-- 不把零碎英文片段逐个放在独立行、引用块或代码块中。两个相关结构在同一句话中并列说明，如“`and` 连接 `held responsible` 和 `confiscated`，两项共用 `could be`”。
+- 不把零碎英文片段逐个放在独立行、引用块或代码块中。按上述条件生成的 `### 结构总览` 纯文本代码块不受此限制。两个相关结构在同一句话中并列说明，如“`and` 连接 `held responsible` 和 `confiscated`，两项共用 `could be`”。
 - 简短的完整还原句也优先嵌入说明段落。句子较长且确需观察整体结构时才单独成段；三项以上且需要逐项对应时可使用列表或表格。
 - 避免一个标题下只放一个英文片段或一句简短解释；内容过短时并入相邻段落，保持推导连续。
 
 结构总览示例：
 
 ```text
-主句骨架：We study [how AI is reshaping the economy] because [we are committed to ensuring [that this transition is beneficial for society, including workers]].
+主句骨架：We study [how AI is reshaping the economy] [because we are committed to ensuring [that this transition is beneficial for society, including workers]].
 ├─ [how AI is reshaping the economy]：名词从句｜作 study 的宾语
-└─ because [we are committed to ensuring [...]]：原因副词从句｜修饰主句 We study ...
+└─ [because we are committed to ensuring [...]]：原因副词从句｜修饰主句 We study ...
    └─ [that this transition is beneficial for society, including workers]：名词从句｜作 ensuring 的宾语
 ```
 
