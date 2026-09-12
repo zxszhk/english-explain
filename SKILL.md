@@ -48,6 +48,8 @@ description: "以中文逐句精讲英语句子、台词、字幕和文章，提
 
 4. **语法讲解**：先标明基本句型，再按“结构片段 → 功能／修饰对象 → 判断依据或还原”的顺序说明值得讲解的结构，不把这些提示词机械写成栏目。
 
+- **结构总览：** 当一句包含两层以上的从句嵌套、多个从句的并列归属不清，或修饰范围容易误判时，在 `### 基本句型` 之后增加 `### 结构总览`。使用纯文本代码块，以主句为外层骨架，用方括号标出从句边界，并用缩进或连线注明“从句类型 + 句法功能／修饰对象”。简单单层从句无需绘制。结构图只呈现原句实际存在的表层结构；解释性的完整形式、省略来源和存在歧义的还原放在后文说明，不混入结构图，也不写成唯一来源。
+
 无符合标准的词汇时，第 3 部分仅写“本句无须单独讲解的词汇”，不建空表或用基础词凑数。句法简单时，第 4 部分可以只保留句型符号及必要的 `to` 说明。
 
 ### 英文引用与结构片段
@@ -56,6 +58,15 @@ description: "以中文逐句精讲英语句子、台词、字幕和文章，提
 - 不把零碎英文片段逐个放在独立行、引用块或代码块中。两个相关结构在同一句话中并列说明，如“`and` 连接 `held responsible` 和 `confiscated`，两项共用 `could be`”。
 - 简短的完整还原句也优先嵌入说明段落。句子较长且确需观察整体结构时才单独成段；三项以上且需要逐项对应时可使用列表或表格。
 - 避免一个标题下只放一个英文片段或一句简短解释；内容过短时并入相邻段落，保持推导连续。
+
+结构总览示例：
+
+```text
+主句骨架：We study [how AI is reshaping the economy] because [we are committed to ensuring [that this transition is beneficial for society, including workers]].
+├─ [how AI is reshaping the economy]：名词从句｜作 study 的宾语
+└─ because [we are committed to ensuring [...]]：原因副词从句｜修饰主句 We study ...
+   └─ [that this transition is beneficial for society, including workers]：名词从句｜作 ensuring 的宾语
+```
 
 ## 词汇表标准
 
