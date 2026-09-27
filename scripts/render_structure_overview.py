@@ -10,11 +10,11 @@ from pathlib import Path
 
 
 ROLE_COLORS = {
-    "main": "var(--blue)",
-    "clause": "var(--green)",
-    "parallel": "var(--orange)",
-    "nested": "var(--red)",
-    "extra": "var(--purple)",
+    "main": "light-dark(#0969da, #58a6ff)",
+    "clause": "light-dark(#1a7f37, #3fb950)",
+    "parallel": "light-dark(#9a6700, #d29922)",
+    "nested": "light-dark(#8250df, #bc8cff)",
+    "extra": "light-dark(#9a6700, #d29922)",
 }
 
 
@@ -27,23 +27,30 @@ def render_item(item):
     title = html.escape(item.get("title", "结构总览"))
     sentence_parts = []
     for segment in item.get("segments", []):
-        text = html.escape(segment.get("text", ""))
+        raw_text = segment.get("text", "")
         role = segment.get("role")
-        if role:
+        if role and raw_text.strip():
+            leading = raw_text[: len(raw_text) - len(raw_text.lstrip())]
+            trailing = raw_text[len(raw_text.rstrip()) :]
+            core_end = len(raw_text) - len(trailing) if trailing else len(raw_text)
+            core = raw_text[len(leading) : core_end]
             sentence_parts.append(
-                '<span class="syntax-segment role-{0}">{1}</span>'.format(
-                    html.escape(role), text
+                '{0}<span class="syntax-segment role-{1}">{2}</span>{3}'.format(
+                    html.escape(leading),
+                    html.escape(role),
+                    html.escape(core),
+                    html.escape(trailing),
                 )
             )
         else:
-            sentence_parts.append(text)
+            sentence_parts.append(html.escape(raw_text))
 
     legend_rows = []
     for entry in item.get("legend", []):
         role = html.escape(entry.get("role", "extra"))
         label = html.escape(entry.get("label", ""))
         legend_rows.append(
-            '<li><span class="legend-line role-{0}" aria-hidden="true"></span>'
+            '<li><span class="legend-swatch role-{0}" aria-hidden="true"></span>'
             '<span>{1}</span></li>'.format(role, label)
         )
 
@@ -62,8 +69,9 @@ def render_item(item):
         )
 
     return (
-        '<section class="syntax-item" aria-label="{0}">'
-        '<h3>{0}</h3>'
+        '<section class="syntax-item card" aria-label="{0}">'
+        '<header class="syntax-heading"><p class="eyebrow">Sentence structure</p>'
+        '<h3>{0}</h3></header>'
         '<p class="sentence">{1}</p>'
         '{2}{3}'
         '</section>'
@@ -82,16 +90,19 @@ def render(spec, root_id):
     items = "".join(render_item(item) for item in spec.get("items", []))
     return """<div id="{root}" class="syntax-overview">
 <style>
-#{root}{{color:var(--foreground);font-size:var(--font-size-base);display:grid;gap:1.5rem;}}
-#{root} .syntax-item{{display:grid;gap:.65rem;}}
-#{root} h3{{margin:0;font-weight:500;}}
-#{root} .sentence{{margin:0;line-height:1.9;font-size:1.02em;}}
-#{root} .syntax-segment{{color:inherit;text-decoration-line:underline;text-decoration-color:var(--syntax-color);text-decoration-thickness:3px;text-underline-offset:5px;text-decoration-skip-ink:none;}}
-#{root} .legend-title,#{root} .relation-title{{font-weight:500;margin-top:.15rem;}}
-#{root} .legend{{list-style:none;padding:0;margin:0;display:grid;gap:.4rem;}}
-#{root} .legend li{{display:flex;align-items:center;gap:.65rem;color:var(--muted-foreground);}}
-#{root} .legend-line{{width:2.25rem;border-bottom:3px solid var(--syntax-color);flex:none;}}
-#{root} .relations{{margin:0;padding:0;background:transparent;color:var(--muted-foreground);white-space:pre-wrap;font:inherit;line-height:1.65;}}
+#{root}{{color-scheme:light dark;color:var(--foreground);font-size:var(--font-size-base);display:grid;gap:1.5rem;}}
+#{root} .syntax-item{{display:grid;gap:1rem;}}
+#{root} .syntax-heading{{display:grid;gap:.25rem;}}
+#{root} .eyebrow{{margin:0;color:var(--muted-foreground);font-size:.72em;font-weight:650;letter-spacing:.08em;text-transform:uppercase;}}
+#{root} h3{{margin:0;font-size:1.05em;font-weight:600;line-height:1.35;}}
+#{root} .sentence{{margin:0;padding:.9rem 0;border-block:1px solid var(--border);line-height:2.05;font-size:1.02em;}}
+#{root} .syntax-segment{{--syntax-soft:color-mix(in srgb,var(--syntax-color) 7%,transparent);color:inherit;padding:.08em .22em;border-radius:.22rem;background:var(--syntax-soft);box-decoration-break:clone;-webkit-box-decoration-break:clone;}}
+#{root} .legend-title,#{root} .relation-title{{font-size:.82em;font-weight:650;letter-spacing:.02em;}}
+#{root} .legend{{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem 1rem;}}
+#{root} .legend li{{display:flex;align-items:center;gap:.6rem;min-width:0;color:var(--muted-foreground);font-size:.92em;}}
+#{root} .legend-swatch{{--syntax-soft:color-mix(in srgb,var(--syntax-color) 7%,transparent);width:2rem;height:1.05rem;border-radius:.22rem;background:var(--syntax-soft);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--syntax-color) 18%,transparent);flex:none;}}
+#{root} .relations{{margin:0;padding:.15rem 0 .15rem .85rem;border-left:2px solid var(--border);background:transparent;color:var(--muted-foreground);white-space:pre-wrap;font:inherit;font-size:.92em;line-height:1.65;}}
+@media(max-width:560px){{#{root} .legend{{grid-template-columns:1fr;}}}}
 {color_rules}
 </style>
 {items}
